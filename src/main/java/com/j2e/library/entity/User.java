@@ -1,5 +1,6 @@
 package com.j2e.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +22,10 @@ public class User {
 
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    private List<Loan> loans;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Borrowing> borrowings;
 }

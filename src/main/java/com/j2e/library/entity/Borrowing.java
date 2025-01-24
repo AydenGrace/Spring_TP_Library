@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "loans")
-public class Loan {
+@Table(name = "borrowings")
+public class Borrowing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

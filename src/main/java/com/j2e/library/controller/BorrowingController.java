@@ -1,4 +1,4 @@
 package com.j2e.library.controller;
 
-public class LoanController {
+public class BorrowingController {
 }
