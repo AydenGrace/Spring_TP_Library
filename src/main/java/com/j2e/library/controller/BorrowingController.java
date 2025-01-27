@@ -1,12 +1,9 @@
 package com.j2e.library.controller;
 
 import com.j2e.library.dto.BorrowingDto;
-import com.j2e.library.dto.mapper.BookMapper;
 import com.j2e.library.dto.mapper.BorrowingMapper;
-import com.j2e.library.entity.Borrowing;
 import com.j2e.library.exceptions.*;
 import com.j2e.library.service.BorrowingService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

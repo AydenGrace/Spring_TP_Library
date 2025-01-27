@@ -1,8 +1,5 @@
 package com.j2e.library.dto;
 
-import com.j2e.library.entity.Borrowing;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

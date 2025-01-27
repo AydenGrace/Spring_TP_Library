@@ -28,6 +28,8 @@ public class Borrowing {
 
     @Column(name = "borrow_date",nullable = false)
     private LocalDate borrowDate;
+
     @Column(name = "return_date")
     private LocalDate returnDate;
+
 }

@@ -6,9 +6,7 @@ import com.j2e.library.exceptions.UserEmailAlreadyExistException;
 import com.j2e.library.exceptions.UserNotFoundException;
 import com.j2e.library.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.Validation;
 import jakarta.validation.ValidationException;
-import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
