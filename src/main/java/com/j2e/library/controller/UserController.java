@@ -5,9 +5,13 @@ import com.j2e.library.exceptions.UserEmailAlreadyExistException;
 import com.j2e.library.exceptions.UserNotFoundException;
 import com.j2e.library.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidationException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
     private final UserService userService;
 
@@ -36,19 +41,20 @@ public class UserController {
         }
     }
     @PostMapping
-    public ResponseEntity<String> post(@Valid @RequestBody User body){
+    public ResponseEntity<String> post(@RequestBody @Valid User body){
         System.out.println("[POST] request create new user");
+
         try{
             userService.createUser(body);
             System.out.println("[POST] New user created");
             return ResponseEntity.ok("User created");
-        }catch (UserEmailAlreadyExistException e){
+        }catch (UserEmailAlreadyExistException | ValidationException e){
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patch(@PathVariable Long id,@Valid @RequestBody User body){
+    public ResponseEntity<String> patch(@PathVariable Long id,@RequestBody @Valid User body){
         System.out.println("[PATCH] request modify user id : "+id);
         try{
             userService.updateUser(id,body);

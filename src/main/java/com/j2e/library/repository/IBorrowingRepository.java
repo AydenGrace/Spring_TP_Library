@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface IBorrowingRepository extends JpaRepository<Borrowing,Long> {
     List<Borrowing> findByUser(User user);
-    List<Borrowing> findByBook(Book book);
-    List<Borrowing> findByBorrowDate(LocalDate borrowed);
-    List<Borrowing> findByReturnDate(LocalDate returned);
+    List<Borrowing> findByUserAndReturnDateIsNull(User user);
+    long countByUserAndReturnDateIsNull(User user);
 }
