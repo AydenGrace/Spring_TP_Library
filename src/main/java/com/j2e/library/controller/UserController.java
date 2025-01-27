@@ -1,5 +1,6 @@
 package com.j2e.library.controller;
 
+import com.j2e.library.dto.UserDto;
 import com.j2e.library.entity.User;
 import com.j2e.library.exceptions.UserEmailAlreadyExistException;
 import com.j2e.library.exceptions.UserNotFoundException;
@@ -26,12 +27,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAll(){
+    public ResponseEntity<List<UserDto>> getAll(){
         System.out.println("[GET] request find all users");
         return ResponseEntity.ok(userService.getAllUsers());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getById(@PathVariable Long id){
         System.out.println("[GET] request find user by id : "+id);
         try{
             return ResponseEntity.ok(userService.getById(id));
@@ -54,7 +55,7 @@ public class UserController {
         }
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patch(@PathVariable Long id,@RequestBody @Valid User body){
+    public ResponseEntity<String> patch(@PathVariable Long id,@RequestBody User body){
         System.out.println("[PATCH] request modify user id : "+id);
         try{
             userService.updateUser(id,body);

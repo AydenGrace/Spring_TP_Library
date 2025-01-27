@@ -1,11 +1,15 @@
 package com.j2e.library.controller;
 
+import com.j2e.library.dto.BookDto;
+import com.j2e.library.dto.mapper.BookMapper;
 import com.j2e.library.entity.Book;
 import com.j2e.library.exceptions.BookNotFoundException;
 import com.j2e.library.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,11 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/book")
+@Validated
 public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<Book>> getAll(){
+    public ResponseEntity<List<BookDto>> getAll(){
         System.out.println("[GET] request find all books");
         return ResponseEntity.ok(bookService.getAll());
     }
@@ -30,7 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getById(@PathVariable Long id){
+    public ResponseEntity<BookDto> getById(@PathVariable Long id){
         System.out.println("[GET] request find book by id : "+id);
         try{
             return ResponseEntity.ok(bookService.getById(id));
@@ -41,10 +46,10 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<String> postBook(@RequestBody Book body){
+    public ResponseEntity<String> postBook(@RequestBody @Valid BookDto body){
         System.out.println("[POST] request create new book");
         try{
-            bookService.createBook(body);
+            bookService.createBook(BookMapper.toEntity(body));
             System.out.println("[POST] New book created");
             return ResponseEntity.ok("Book created");
         }catch (Exception e){
@@ -54,10 +59,10 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patch(@PathVariable Long id, @RequestBody Book body){
+    public ResponseEntity<String> patch(@PathVariable Long id, @RequestBody BookDto body){
         System.out.println("[PATCH] request modify book id : "+id);
         try{
-            bookService.update(id,body);
+            bookService.update(id,BookMapper.toEntity(body));
             System.out.println("[PATCH] book modified");
             return ResponseEntity.ok("Book modified");
         }catch (BookNotFoundException e){

@@ -1,5 +1,7 @@
 package com.j2e.library.service;
 
+import com.j2e.library.dto.BorrowingDto;
+import com.j2e.library.dto.mapper.BorrowingMapper;
 import com.j2e.library.entity.Book;
 import com.j2e.library.entity.Borrowing;
 import com.j2e.library.entity.User;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,21 +98,37 @@ public class BorrowingService {
     }
 
     //READ
-    public List<Borrowing> getAll() {
-        return borrowingRepository.findAll();
+    public List<BorrowingDto> getAll() {
+        List<BorrowingDto> borrowingDtos = new ArrayList<>();
+        for (Borrowing borrowing : borrowingRepository.findAll()) {
+            borrowingDtos.add(BorrowingMapper.toDto(borrowing));
+        }
+        return borrowingDtos;
     }
 
-    public List<Borrowing> getAllOfUser(Long id) throws UserNotFoundException{
+    public List<BorrowingDto> getAllOfUser(Long id) throws UserNotFoundException{
         Optional<User> userToFind = userRepository.findById(id);
         if(userToFind.isPresent())
-            return borrowingRepository.findByUser(userToFind.get());
+        {
+            List<BorrowingDto> borrowingDtos = new ArrayList<>();
+            for (Borrowing borrowing : borrowingRepository.findByUser(userToFind.get())) {
+                borrowingDtos.add(BorrowingMapper.toDto(borrowing));
+            }
+            return borrowingDtos;
+        }
         else throw new UserNotFoundException();
     }
 
-    public List<Borrowing> getCurrentOfUser(Long id) throws UserNotFoundException {
+    public List<BorrowingDto> getCurrentOfUser(Long id) throws UserNotFoundException {
         Optional<User> userToFind = userRepository.findById(id);
         if(userToFind.isPresent())
-            return borrowingRepository.findByUserAndReturnDateIsNull(userToFind.get());
+        {
+            List<BorrowingDto> borrowingDtos = new ArrayList<>();
+            for (Borrowing borrowing : borrowingRepository.findByUserAndReturnDateIsNull(userToFind.get())) {
+                borrowingDtos.add(BorrowingMapper.toDto(borrowing));
+            }
+            return borrowingDtos;
+        }
         else throw new UserNotFoundException();
     }
 

@@ -23,10 +23,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "User name cannot be null")
+    @NotBlank(message = "User name cannot be blank")
     @Column(nullable = false)
     private String name;
 
-    @Email(regexp = ".+[@].+[\\.].+",message = "Email not valid")
+    @Email(regexp = ".+[@].+[\\.].+",message = "User Email not valid")
+    @NotNull(message = "User Email cannot be null")
+    @NotBlank(message = "User Email cannot be blank")
     @Column(nullable = false, unique = true)
     private String email;
 

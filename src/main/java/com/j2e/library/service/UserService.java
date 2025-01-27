@@ -1,5 +1,7 @@
 package com.j2e.library.service;
 
+import com.j2e.library.dto.UserDto;
+import com.j2e.library.dto.mapper.UserMapper;
 import com.j2e.library.entity.User;
 import com.j2e.library.exceptions.UserEmailAlreadyExistException;
 import com.j2e.library.exceptions.UserNotFoundException;
@@ -7,6 +9,7 @@ import com.j2e.library.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +27,18 @@ public class UserService {
     }
 
     //READ
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        List<UserDto> dtos = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            dtos.add(UserMapper.toDto(user));
+        }
+        return dtos;
     }
 
-    public User getById(Long id) throws UserNotFoundException {
+    public UserDto getById(Long id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            return user.get();
+            return UserMapper.toDto(user.get());
         } else {
             throw new UserNotFoundException();
         }

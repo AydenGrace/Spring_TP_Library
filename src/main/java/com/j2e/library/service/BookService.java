@@ -1,11 +1,14 @@
 package com.j2e.library.service;
 
+import com.j2e.library.dto.BookDto;
+import com.j2e.library.dto.mapper.BookMapper;
 import com.j2e.library.entity.Book;
 import com.j2e.library.exceptions.BookNotFoundException;
 import com.j2e.library.repository.IBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +23,18 @@ public class BookService {
     }
 
     //READ
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<BookDto> getAll() {
+        List<BookDto> bookDtos = new ArrayList<>();
+        for (Book book : bookRepository.findAll()) {
+            bookDtos.add(BookMapper.toDto(book));
+        }
+        return bookDtos;
     }
 
-    public Book getById(Long id) throws BookNotFoundException {
+    public BookDto getById(Long id) throws BookNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
-            return book.get();
+            return BookMapper.toDto(book.get());
         } else {
             throw new BookNotFoundException();
         }
